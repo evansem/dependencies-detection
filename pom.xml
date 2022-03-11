@@ -48,10 +48,10 @@
                         </goals>
                         <configuration>
                             <relocations>
-                                <relocation>
-                                    <pattern>junit</pattern>
-                                    <shadedPattern>junit</shadedPattern>
-                                </relocation>
+<!--                                <relocation>-->
+<!--                                    <pattern>junit</pattern>-->
+<!--                                    <shadedPattern>junit</shadedPattern>-->
+<!--                                </relocation>-->
                                 <relocation>
                                     <pattern>org.json</pattern>
                                     <shadedPattern>org.json</shadedPattern>
