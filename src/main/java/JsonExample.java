@@ -1,3 +1,4 @@
+import com.google.common.base.Preconditions;
 import org.json.JSONObject;
 
 public class JsonExample {
@@ -12,7 +13,9 @@ public class JsonExample {
     }
 
     public static void main(String[] args) {
-
+        var value = 90;
+        Preconditions.checkArgument(value >= 0.0, "negative value: %s", value);
         System.out.println(createJSON().toString(4));
+
     }
 }
