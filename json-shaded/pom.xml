@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -56,15 +56,15 @@
                             <relocations>
                                 <relocation>
                                     <pattern>junit</pattern>
-                                    <shadedPattern>junit</shadedPattern>
+                                    <shadedPattern>my.junit</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>org.json</pattern>
-                                    <shadedPattern>org.json</shadedPattern>
+                                    <shadedPattern>my.org.json</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>com.google.guava</pattern>
-                                    <shadedPattern>com.google.guava</shadedPattern>
+                                    <shadedPattern>my.com.google.guava</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
