@@ -418,10 +418,10 @@ public final class GelfLayout extends AbstractStringLayout {
         return Collections.emptyMap();
     }
 
-    @Override
-    public String getContentType() {
-        return JsonLayout.CONTENT_TYPE + "; charset=" + this.getCharset();
-    }
+//    @Override
+//    public String getContentType() {
+//        return JsonLayout.CONTENT_TYPE + "; charset=" + this.getCharset();
+//    }
 
     @Override
     public byte[] toByteArray(final LogEvent event) {
