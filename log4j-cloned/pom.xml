@@ -1122,79 +1122,79 @@
                 </executions>
             </plugin>
 
-        <plugin>
-            <groupId>org.revapi</groupId>
-            <artifactId>revapi-maven-plugin</artifactId>
-            <version>${revapi.plugin.version}</version>
-            <executions>
-                <execution>
-                    <goals><goal>check</goal></goals>
-                    <configuration>
-                        <checkDependencies>false</checkDependencies>
-                        <skip>${revapi.skip}</skip>
-                        <failOnMissingConfigurationFiles>false</failOnMissingConfigurationFiles>
-                        <analysisConfigurationFiles>
-                            <path>revapi.json</path>
-                        </analysisConfigurationFiles>
-                        <analysisConfiguration><![CDATA[
-[
-  {
-     "extension": "revapi.java",
-     "configuration": {
-       "missing-classes": {
-         "behavior": "report",
-         "ignoreMissingAnnotations": false
-       },
-       "reportUsesFor": [
-          "java.missing.newClass",
-          "java.class.nonPublicPartOfAPI"
-       ],
-       "filter": {
-         "classes": {
-           "regex": true,
-           "include": [
-             "org\\.apache\\.logging\\.log4j(\\..+)?"
-           ]
-         },
-         "packages": {
-           "regex": true,
-           "include": [
-             "org\\.apache\\.logging\\.log4j(\\..+)?"
-           ]
-         }
-       }
-     }
-  },
-  {
-    "extension": "revapi.ignore",
-    "configuration": [
-      {
-  		"code": "java.method.returnTypeTypeParametersChanged",
-  		"old": "method org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder org.apache.logging.log4j.core.appender.OutputStreamAppender::newBuilder()",
-  		"new": "method <B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B>>> B org.apache.logging.log4j.core.appender.OutputStreamAppender::newBuilder()",
-  		"justification": "The compiler erases types (https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.6)"
-	  },
-      {
-        "code": "java.generics.elementNowParameterized",
-        "old": "method org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder org.apache.logging.log4j.core.appender.OutputStreamAppender::newBuilder()",
-        "new": "method <B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B>>> B org.apache.logging.log4j.core.appender.OutputStreamAppender::newBuilder()",
-        "justification": "The compiler erases types (https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.6)"
-      },
-      {
-        "code": "java.generics.formalTypeParameterAdded",
-        "old": "method org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder org.apache.logging.log4j.core.appender.OutputStreamAppender::newBuilder()",
-        "new": "method <B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B>>> B org.apache.logging.log4j.core.appender.OutputStreamAppender::newBuilder()",
-        "typeParameter": "B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B>>",
-        "justification": "The compiler erases types (https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.6)"
-      }
-    ]
-  }
-]
-              ]]></analysisConfiguration>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
+<!--        <plugin>-->
+<!--            <groupId>org.revapi</groupId>-->
+<!--            <artifactId>revapi-maven-plugin</artifactId>-->
+<!--            <version>${revapi.plugin.version}</version>-->
+<!--            <executions>-->
+<!--                <execution>-->
+<!--                    <goals><goal>check</goal></goals>-->
+<!--                    <configuration>-->
+<!--                        <checkDependencies>false</checkDependencies>-->
+<!--                        <skip>${revapi.skip}</skip>-->
+<!--                        <failOnMissingConfigurationFiles>false</failOnMissingConfigurationFiles>-->
+<!--                        <analysisConfigurationFiles>-->
+<!--                            <path>revapi.json</path>-->
+<!--                        </analysisConfigurationFiles>-->
+<!--                        <analysisConfiguration><![CDATA[-->
+<!--[-->
+<!--  {-->
+<!--     "extension": "revapi.java",-->
+<!--     "configuration": {-->
+<!--       "missing-classes": {-->
+<!--         "behavior": "report",-->
+<!--         "ignoreMissingAnnotations": false-->
+<!--       },-->
+<!--       "reportUsesFor": [-->
+<!--          "java.missing.newClass",-->
+<!--          "java.class.nonPublicPartOfAPI"-->
+<!--       ],-->
+<!--       "filter": {-->
+<!--         "classes": {-->
+<!--           "regex": true,-->
+<!--           "include": [-->
+<!--             "org\\.apache\\.logging\\.log4j(\\..+)?"-->
+<!--           ]-->
+<!--         },-->
+<!--         "packages": {-->
+<!--           "regex": true,-->
+<!--           "include": [-->
+<!--             "org\\.apache\\.logging\\.log4j(\\..+)?"-->
+<!--           ]-->
+<!--         }-->
+<!--       }-->
+<!--     }-->
+<!--  },-->
+<!--  {-->
+<!--    "extension": "revapi.ignore",-->
+<!--    "configuration": [-->
+<!--      {-->
+<!--  		"code": "java.method.returnTypeTypeParametersChanged",-->
+<!--  		"old": "method org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder org.apache.logging.log4j.core.appender.OutputStreamAppender::newBuilder()",-->
+<!--  		"new": "method <B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B>>> B org.apache.logging.log4j.core.appender.OutputStreamAppender::newBuilder()",-->
+<!--  		"justification": "The compiler erases types (https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.6)"-->
+<!--	  },-->
+<!--      {-->
+<!--        "code": "java.generics.elementNowParameterized",-->
+<!--        "old": "method org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder org.apache.logging.log4j.core.appender.OutputStreamAppender::newBuilder()",-->
+<!--        "new": "method <B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B>>> B org.apache.logging.log4j.core.appender.OutputStreamAppender::newBuilder()",-->
+<!--        "justification": "The compiler erases types (https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.6)"-->
+<!--      },-->
+<!--      {-->
+<!--        "code": "java.generics.formalTypeParameterAdded",-->
+<!--        "old": "method org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder org.apache.logging.log4j.core.appender.OutputStreamAppender::newBuilder()",-->
+<!--        "new": "method <B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B>>> B org.apache.logging.log4j.core.appender.OutputStreamAppender::newBuilder()",-->
+<!--        "typeParameter": "B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B extends org.apache.logging.log4j.core.appender.OutputStreamAppender.Builder<B>>",-->
+<!--        "justification": "The compiler erases types (https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.6)"-->
+<!--      }-->
+<!--    ]-->
+<!--  }-->
+<!--]-->
+<!--              ]]></analysisConfiguration>-->
+<!--                    </configuration>-->
+<!--                </execution>-->
+<!--            </executions>-->
+<!--        </plugin>-->
         </plugins>
     </build>
 
