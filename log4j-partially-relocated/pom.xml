@@ -47,18 +47,11 @@
                                 <relocation>
                                     <pattern>log4j-core</pattern>
                                     <shadedPattern>shaded.log4j-core</shadedPattern>
-<!--                                    <includes>-->
-<!--                                        <include>org.json.JSONArray</include>-->
-<!--                                        <include>org.json.JSONException</include>-->
-<!--                                        <include>org.json.JSONObject</include>-->
-<!--                                        <include>org.json.JSONPointer</include>-->
-<!--                                        <include>org.json.JSONPointerException</include>-->
-<!--                                        <include>org.json.JSONPropertyIgnore</include>-->
-<!--                                        <include>org.json.JSONPropertyName</include>-->
-<!--                                        <include>org.json.JSONString</include>-->
-<!--                                        <include>org.json.JSONTokener</include>-->
-<!--                                        <include>org.json.JSONWriter</include>-->
-<!--                                    </includes>-->
+                                    <includes>
+                                        <include>org.apache.logging.log4j.core.layout.HtmlLayout</include>
+                                        <include>org.apache.logging.log4j.core.PatternLayout</include>
+                                        <include>org.apache.logging.log4j.core.layout.internal</include>
+                                    </includes>
                                 </relocation>
                             </relocations>
                         </configuration>

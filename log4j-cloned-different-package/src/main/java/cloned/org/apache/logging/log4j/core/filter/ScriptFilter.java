@@ -1,0 +1,155 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache license, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the license for the specific language governing permissions and
+ * limitations under the license.
+ */
+package cloned.org.apache.logging.log4j.core.filter;
+
+import javax.script.SimpleBindings;
+
+import cloned.org.apache.logging.log4j.Level;
+import cloned.org.apache.logging.log4j.Marker;
+import cloned.org.apache.logging.log4j.core.Filter;
+import cloned.org.apache.logging.log4j.core.LogEvent;
+import cloned.org.apache.logging.log4j.core.config.Configuration;
+import cloned.org.apache.logging.log4j.core.config.Node;
+import cloned.org.apache.logging.log4j.core.config.plugins.Plugin;
+import cloned.org.apache.logging.log4j.core.config.plugins.PluginAttribute;
+import cloned.org.apache.logging.log4j.core.config.plugins.PluginConfiguration;
+import cloned.org.apache.logging.log4j.core.config.plugins.PluginElement;
+import cloned.org.apache.logging.log4j.core.config.plugins.PluginFactory;
+import cloned.org.apache.logging.log4j.core.script.AbstractScript;
+import cloned.org.apache.logging.log4j.core.script.ScriptRef;
+import cloned.org.apache.logging.log4j.message.Message;
+import cloned.org.apache.logging.log4j.message.ObjectMessage;
+import cloned.org.apache.logging.log4j.message.SimpleMessage;
+import cloned.org.apache.logging.log4j.status.StatusLogger;
+import cloned.org.apache.logging.log4j.core.AbstractLifeCycle;
+
+/**
+ * Returns the onMatch result if the script returns True and returns the onMismatch value otherwise.
+ */
+@Plugin(name = "ScriptFilter", category = Node.CATEGORY, elementType = Filter.ELEMENT_TYPE, printObject = true)
+public final class ScriptFilter extends AbstractFilter {
+
+    private static cloned.org.apache.logging.log4j.Logger logger = StatusLogger.getLogger();
+
+    private final AbstractScript script;
+    private final Configuration configuration;
+
+    private ScriptFilter(final AbstractScript script, final Configuration configuration, final Filter.Result onMatch,
+                         final Filter.Result onMismatch) {
+        super(onMatch, onMismatch);
+        this.script = script;
+        this.configuration = configuration;
+        if (!(script instanceof ScriptRef)) {
+            configuration.getScriptManager().addScript(script);
+        }
+    }
+
+    @Override
+    public Filter.Result filter(final cloned.org.apache.logging.log4j.core.Logger logger, final Level level, final Marker marker, final String msg,
+                                final Object... params) {
+        final SimpleBindings bindings = new SimpleBindings();
+        bindings.put("logger", logger);
+        bindings.put("level", level);
+        bindings.put("marker", marker);
+        bindings.put("message", new SimpleMessage(msg));
+        bindings.put("parameters", params);
+        bindings.put("throwable", null);
+        bindings.putAll(configuration.getProperties());
+        bindings.put("substitutor", configuration.getStrSubstitutor());
+        final Object object = configuration.getScriptManager().execute(script.getName(), bindings);
+        return object == null || !Boolean.TRUE.equals(object) ? onMismatch : onMatch;
+    }
+
+    @Override
+    public Filter.Result filter(final cloned.org.apache.logging.log4j.core.Logger logger, final Level level, final Marker marker, final Object msg,
+                                final Throwable t) {
+        final SimpleBindings bindings = new SimpleBindings();
+        bindings.put("logger", logger);
+        bindings.put("level", level);
+        bindings.put("marker", marker);
+        bindings.put("message", msg instanceof String ? new SimpleMessage((String)msg) : new ObjectMessage(msg));
+        bindings.put("parameters", null);
+        bindings.put("throwable", t);
+        bindings.putAll(configuration.getProperties());
+        bindings.put("substitutor", configuration.getStrSubstitutor());
+        final Object object = configuration.getScriptManager().execute(script.getName(), bindings);
+        return object == null || !Boolean.TRUE.equals(object) ? onMismatch : onMatch;
+    }
+
+    @Override
+    public Filter.Result filter(final cloned.org.apache.logging.log4j.core.Logger logger, final Level level, final Marker marker, final Message msg,
+                                final Throwable t) {
+        final SimpleBindings bindings = new SimpleBindings();
+        bindings.put("logger", logger);
+        bindings.put("level", level);
+        bindings.put("marker", marker);
+        bindings.put("message", msg);
+        bindings.put("parameters", null);
+        bindings.put("throwable", t);
+        bindings.putAll(configuration.getProperties());
+        bindings.put("substitutor", configuration.getStrSubstitutor());
+        final Object object = configuration.getScriptManager().execute(script.getName(), bindings);
+        return object == null || !Boolean.TRUE.equals(object) ? onMismatch : onMatch;
+    }
+
+    @Override
+    public Filter.Result filter(final LogEvent event) {
+        final SimpleBindings bindings = new SimpleBindings();
+        bindings.put("logEvent", event);
+        bindings.putAll(configuration.getProperties());
+        bindings.put("substitutor", configuration.getStrSubstitutor());
+        final Object object = configuration.getScriptManager().execute(script.getName(), bindings);
+        return object == null || !Boolean.TRUE.equals(object) ? onMismatch : onMatch;
+    }
+
+    @Override
+    public String toString() {
+        return script.getName();
+    }
+
+    /**
+     * Creates the ScriptFilter.
+     * @param script The script to run. The script must return a boolean value. Either script or scriptFile must be
+     *      provided.
+     * @param match The action to take if a match occurs.
+     * @param mismatch The action to take if no match occurs.
+     * @param configuration the configuration
+     * @return A ScriptFilter.
+     */
+    // TODO Consider refactoring to use AbstractFilter.AbstractFilterBuilder
+    @PluginFactory
+    public static ScriptFilter createFilter(
+            @PluginElement("Script") final AbstractScript script,
+            @PluginAttribute("onMatch") final Filter.Result match,
+            @PluginAttribute("onMismatch") final Filter.Result mismatch,
+            @PluginConfiguration final Configuration configuration) {
+
+        if (script == null) {
+            AbstractLifeCycle.LOGGER.error("A Script, ScriptFile or ScriptRef element must be provided for this ScriptFilter");
+            return null;
+        }
+        if (script instanceof ScriptRef) {
+            if (configuration.getScriptManager().getScript(script.getName()) == null) {
+                logger.error("No script with name {} has been declared.", script.getName());
+                return null;
+            }
+        }
+
+        return new ScriptFilter(script, configuration, match, mismatch);
+    }
+
+}

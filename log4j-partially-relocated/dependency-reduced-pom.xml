@@ -24,6 +24,11 @@
                 <relocation>
                   <pattern>log4j-core</pattern>
                   <shadedPattern>shaded.log4j-core</shadedPattern>
+                  <includes>
+                    <include>org.apache.logging.log4j.core.layout.HtmlLayout</include>
+                    <include>org.apache.logging.log4j.core.PatternLayout</include>
+                    <include>org.apache.logging.log4j.core.layout.internal</include>
+                  </includes>
                 </relocation>
               </relocations>
             </configuration>
